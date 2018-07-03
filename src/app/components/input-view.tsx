@@ -13,12 +13,9 @@ interface State {
 }
 
 export class InputView extends React.Component<{}, State> {
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-            currentInputValue: ""
-        };
-    }
+    public state: State = {
+        currentInputValue: ""
+    };
 
     protected handleInputChange: React.ChangeEventHandler<HTMLInputElement> = event => {
         this.setState({
@@ -30,7 +27,7 @@ export class InputView extends React.Component<{}, State> {
         if (newTodoText.length === 0) {
             alert("Hey! Write something!");
         } else {
-            TodoActionsCreators.todoAdded(newTodoText);
+            TodoActionsCreators.addItem(newTodoText);
         }
     }
 
@@ -53,11 +50,11 @@ export class InputView extends React.Component<{}, State> {
     };
 
     protected onFilterClick(event: React.MouseEvent<HTMLButtonElement>, filtertype: Filter): void {
-        TodoActionsCreators.filterClicked(filtertype);
+        TodoActionsCreators.filterItems(filtertype);
     }
 
     protected onDeleteCheckedClick: React.MouseEventHandler<HTMLButtonElement> = event => {
-        TodoActionsCreators.deleteCheckedClicked();
+        TodoActionsCreators.deleteItems();
     };
 
     public render(): JSX.Element {

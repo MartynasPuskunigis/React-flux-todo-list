@@ -5,6 +5,12 @@ import { Task } from "./../contracts/Task";
 
 import { TodoReduceStore } from "./../stores/todo-store";
 import { TodoActionsCreators } from "./../actions/todo-actions-creators";
+import {
+    ListItemView,
+    InputItemViewOnDeleteClickedHandler,
+    InputItemViewOnTaskClickedHandler,
+    InputItemViewOnCheckboxClickedHandler
+} from "../components/list-item-view";
 
 interface State {
     tasks: Task[];
@@ -21,35 +27,27 @@ class TodoContainerClass extends React.Component<{}, State> {
         };
     }
 
-    protected onDeleteClick(event: React.MouseEvent<HTMLButtonElement>, taskId: number): void {
-        TodoActionsCreators.todoDeleted(taskId);
-    }
+    protected onDeleteClick: InputItemViewOnDeleteClickedHandler = taskId => {
+        TodoActionsCreators.deleteItem(taskId);
+    };
 
-    protected onTaskClick(event: React.MouseEvent<HTMLDivElement>, taskId: number): void {
-        TodoActionsCreators.todoCompletionChanged(taskId);
-    }
+    protected onTaskClick: InputItemViewOnTaskClickedHandler = taskId => {
+        TodoActionsCreators.toggleItemsState(taskId);
+    };
 
-    protected onCheckboxClick(event: React.MouseEvent<HTMLInputElement>, taskId: number): void {
-        TodoActionsCreators.todoCheckboxClicked(event, taskId);
-    }
+    protected onCheckboxClick: InputItemViewOnCheckboxClickedHandler = (taskId, isChecked) => {
+        TodoActionsCreators.addNewCheckedItem(isChecked, taskId);
+    };
 
     public render(): JSX.Element | JSX.Element[] {
         const todoTasks = this.state.tasks.map(task => (
-            <div key={task.id}>
-                <div>
-                    <input onClick={event => this.onCheckboxClick(event, task.id)} type="checkbox" />
-                </div>
-                {task.isDone ? (
-                    <div onClick={event => this.onTaskClick(event, task.id)}>
-                        <del>{task.text}</del>
-                    </div>
-                ) : (
-                    <div onClick={event => this.onTaskClick(event, task.id)}>{task.text}</div>
-                )}
-                <div>
-                    <button onClick={event => this.onDeleteClick(event, task.id)}>X</button>
-                </div>
-            </div>
+            <ListItemView
+                key={`item-${task.id}`}
+                task={task}
+                onCheckboxClicked={this.onCheckboxClick}
+                onDeleteClicked={this.onDeleteClick}
+                onTaskClicked={this.onTaskClick}
+            />
         ));
         return <div>{todoTasks}</div>;
     }

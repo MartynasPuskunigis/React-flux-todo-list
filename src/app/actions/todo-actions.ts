@@ -29,10 +29,10 @@ export class FilterChangedAction {
     }
 }
 export class CheckboxClickedAction {
-    constructor(private checkevent: React.MouseEvent<HTMLInputElement>, private id: number) {}
+    constructor(private isCheckboxChecked: boolean, private id: number) {}
 
-    public get event(): React.MouseEvent<HTMLInputElement> {
-        return this.checkevent;
+    public get isChecked(): boolean {
+        return this.isCheckboxChecked;
     }
 
     public get taskId(): number {

@@ -80,7 +80,7 @@ class TodoReduceStoreClass extends ReduceStore<StoreState> {
         const nextState: StoreState = {
             ...state
         };
-        if (action.event.currentTarget.checked) {
+        if (action.isChecked) {
             nextState.checkedBoxesIds.unshift(action.taskId);
         } else {
             nextState.checkedBoxesIds = nextState.checkedBoxesIds.filter(item => item !== action.taskId);
