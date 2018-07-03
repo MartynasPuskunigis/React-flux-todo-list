@@ -14,33 +14,33 @@ interface Props {
 
 export class ListItemView extends React.Component<Props> {
 
-    protected onCheckboxClick(event: React.MouseEvent<HTMLInputElement>, taskId: number): void {
-        this.props.onCheckboxClicked(taskId, event.currentTarget.checked);
+    protected onCheckboxClick: React.MouseEventHandler<HTMLInputElement> = event => {
+        this.props.onCheckboxClicked(this.props.task.id, event.currentTarget.checked);
     }
 
-    protected onTaskClick(event: React.MouseEvent<HTMLDivElement>, taskId: number): void {
-        this.props.onTaskClicked(taskId);
+    protected onTaskClick: React.MouseEventHandler<HTMLDivElement> = event => {
+        this.props.onTaskClicked(this.props.task.id);
     }
 
-    protected onDeleteClick(event: React.MouseEvent<HTMLButtonElement>, taskId: number): void {
-        this.props.onDeleteClicked(taskId);
+    protected onDeleteClick: React.MouseEventHandler<HTMLButtonElement> = event => {
+        this.props.onDeleteClicked(this.props.task.id);
     }
 
     public render(): JSX.Element | JSX.Element[] {
         return (
             <div>
                 <div>
-                    <input onClick={event => this.onCheckboxClick(event, this.props.task.id)} type="checkbox" />
+                    <input type="checkbox" onClick={this.onCheckboxClick} />
                 </div>
                 {this.props.task.isDone ? (
-                    <div onClick={event => this.onTaskClick(event, this.props.task.id)}>
+                    <div onClick={this.onTaskClick}>
                         <del>{this.props.task.text}</del>
                     </div>
                 ) : (
-                    <div onClick={event => this.onTaskClick(event, this.props.task.id)}>{this.props.task.text}</div>
+                    <div onClick={this.onTaskClick}>{this.props.task.text}</div>
                 )}
                 <div>
-                    <button onClick={event => this.onDeleteClick(event, this.props.task.id)}>X</button>
+                    <button onClick={this.onDeleteClick}>X</button>
                 </div>
             </div>
         );
